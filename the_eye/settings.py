@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    #Third-party apps
+    'rest_framework',
+
     # My apps
     'the_eye.core'
 ]
