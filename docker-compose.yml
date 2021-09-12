@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    container_name: the_eye_db
+    image: postgres:12.4
+    environment:
+      - POSTGRES_PASSWORD=postgres
+  web:
+    container_name: the_eye_web
+    build: .
+    command: gunicorn the_eye.wsgi:application --bind 0.0.0.0:8000 --name the_eye
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+        - .env
