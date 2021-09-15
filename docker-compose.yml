@@ -6,6 +6,7 @@ services:
     image: postgres:12.4
     environment:
       - POSTGRES_PASSWORD=postgres
+
   web:
     container_name: the_eye_web
     build: .
@@ -18,3 +19,20 @@ services:
       - db
     env_file:
         - .env
+
+  redis:
+    container_name: the_eye_redis
+    image: 'redis:alpine'
+    hostname: redis
+
+  celery:
+    container_name: the_eye_celery
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "celery -A the_eye worker -l info"
+    depends_on:
+      - web
+      - redis
+      - db
+    restart: on-failure
